@@ -3,7 +3,7 @@ This repository contains the source code for the paper "Exploring dominant strat
 
 ## Introduction
 
-This project provides the implementation of the experiments discussed in the paper. The agents are trained using reinforcement learning in repeated and evolutionary games to observe strategy dynamics, focusing on dominant strategies in different game settings.
+This repository provides the Multi-agent-Q-learning code for finding the dominant strategy in evolutionary games, i.e., the memory-two bilateral reciprocity (MTBR) strategy. It also includes the data for the figures presented in the paper and the code for generating those figures.
 
 ## Prerequisites
 
