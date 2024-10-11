@@ -1,1 +1,20 @@
 https://drive.google.com/file/d/1IHVGOD7EcrISVdIG0EbKFrLQ-TKkOdD2/view?usp=drive_link
+
+payoffMatrix.txt: The payoff matrix of of fifteen strategies.
+
+WithoutMTBR_delta0.5_{index}.txt: The state evolution process obtained by one simulation (without MTBR). Each row represents the proportion of strategies at that time, and each column represents one strategy. The data is sampled every ten generations.
+
+WithMTBR_delta0.5_{index}.txt: The state evolution process obtained by one simulation (with MTBR). Each row represents the proportion of strategies at that time, and each column represents one strategy. The data is sampled every ten generations.
+
+states_over_time_withoutMTBR_0.5_7500.npy: The state evolution process obtained by the replicator dynamics (without MTBR).
+
+states_over_time_withMTBR_0.5_7500.npy: The state evolution process obtained by the replicator dynamics (with MTBR).
+
+payoff_withoutMTBR_simulation_0.5.txt: The average payoff evolution process  of the population without MTBR obtained by simulation.
+
+payoff_withMTBR_simulation_0.5.txt: The average payoff evolution process  of the population with MTBR obtained by simulation.
+
+payoff_withoutMTBR_simulation_0.5.txt: The average payoff evolution process  of the population without MTBR obtained by the replicator dynamics.
+
+payoff_withMTBR_simulation_0.5.txt: The average payoff evolution process  of the population with MTBR obtained by the replicator dynamics.
+
