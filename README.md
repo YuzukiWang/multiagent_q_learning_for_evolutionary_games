@@ -5,16 +5,44 @@ This repository contains the source code for the paper "Exploring dominant strat
 
 This repository provides the Multi-agent-Q-learning code for finding the dominant strategy in evolutionary games, i.e., the memory-two bilateral reciprocity (MTBR) strategy. It also includes the data for the figures presented in the paper and the code for generating those figures.
 
-## Prerequisites
+## System Requirements
 
-To run the code locally, please ensure that you have the following dependencies installed.
+### Operating Systems
 
-- Python 3.85
-- Basic Python libraries
+- **Tested on:** Windows 11  
+- **Hardware:** Standard desktop computer (e.g., Intel i5/i7, 8GB RAM)  
 
-## Usage
+### Software Dependencies
 
-To run the code, simply execute the `.py` files located in the selected folder. There are no additional requirements or configurations necessary.
+- **Python Version:** Python 3.8.5 or higher 
+
+- **Required Packages:**  
+
+- sys
+- random
+- time
+- matplotlib
+- json
+- collections
+- numpy
+- pickle
+- datetime
+
+All dependencies can be installed via pip if missing.
+
+## Installation Guide
+
+### Clone the Repository
+```
+git clone https://github.com/YuzukiWang/multiagent_q_learning_for_evolutionary_games
+cd multiagent_q_learning_for_evolutionary_games
+```
+
+## Demo
+```
+python multiagent_q_learning_for_evolutionary_games.py
+```
+
 
 
 ## License
