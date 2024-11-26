@@ -42,7 +42,13 @@ cd multiagent_q_learning_for_evolutionary_games
 ```
 python multiagent_q_learning_for_evolutionary_games.py
 ```
+### Expected Output
 
+A file "Q_table_yyyymmdd_xxxx.txt" including Q_tables of 49 agents.
+  
+### Runtime for Demo
+
+~5 minutes on a standard desktop computer.
 
 
 ## License
