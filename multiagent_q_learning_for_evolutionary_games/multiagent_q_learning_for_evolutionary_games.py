@@ -4,7 +4,7 @@ MENTOR_INSTANCES = 7 # How many instances of each defined strategy there are
 MENTOR_TYPES = 7 # How many types of mentors in the population
 EPISODE_LENGTH = 20 # How many turns to play
 reward_weighting_factor = 0.8 # During vs. ending reward (theta)
-training_time =  5 # How long to train in seconds per agent
+max_decisions = 450000 # How many decisions each agent need to do
 TESTING_EPISODES = 1000 # How many episodes to play during the testing phase
 alpha = 0.2 # Learning rate
 gamma = 0.5 # Discount factor
@@ -370,8 +370,6 @@ class AgentDefined:
 # Stores all AIs
 population = []
 
-# Stores record of analysis of all AIs
-population_analysis = []
 
 # Stores all instances of defined strategies
 mentors = []
@@ -388,40 +386,25 @@ for i in range(MENTOR_TYPES): # Number of defined strategies
     for j in range(MENTOR_INSTANCES):
         mentors.append(AgentDefined(i))
 
-# Training time initialization
-start_time = time()
-remaining_time = training_time * POPULATION_SIZE
-last_remaining_time = int(remaining_time)
-total_training_time = training_time * POPULATION_SIZE
+
 
 # Training mode with AIs
-while remaining_time > 0:
-    # Calculate remaining training time
-    remaining_time = start_time + total_training_time - time()
+while any(agent.epsilon_counter < max_decisions for agent in population):
 
-    # Things to be done every second
-    if 0 <= remaining_time < last_remaining_time:
-        # Alert user to remaining time
-        progress = 100 * (total_training_time - remaining_time) / total_training_time
-        sys.stdout.write('\rTraining [{0}] {1}%'.format(('#' * int(progress / 5)).ljust(19), int(min(100, progress + 5))))
-        sys.stdout.flush()
-        last_remaining_time = int(remaining_time * 2) / float(2)
 
-        # Analyse population
-        if time() > start_time + 0.5:
-            time_step = []
-            for agent in population:
-                time_step.append(agent.analyse())
-                agent.reset_analysis()
-            population_analysis.append(time_step)
+    average_epsilon_counter = sum(agent.epsilon_counter for agent in population) / POPULATION_SIZE
+    progress = 100 * average_epsilon_counter / max_decisions
+    sys.stdout.write('\rTraining [{0}] {1}%'.format(('#' * int(progress / 5)).ljust(19), int(min(100, progress + 5))))
+    sys.stdout.flush()
 
-        # TODO: Analyse mentors
 
     state1 = [] # State visible to player 1 (actions of player 2)
     state2 = [] # State visible to player 2 (actions of player 1)
 
     # Pick a random member of the population to serve as player 1
     player1 = random.choice(population)
+    if player1.epsilon_counter >= max_decisions:
+        continue
 
     # Pick a random member of the population or a defined strategy to serve as player 2
     player2 = random.choice(population + mentors)
@@ -626,8 +609,10 @@ print("phoC_agent: ", Nc_agent/TESTING_EPISODES/EPISODE_LENGTH, "  phoC_mentor: 
 
 
 during=population[0].get_avgdelta_list()
-x=range(len(during))
+x=[i * 1000 for i in range(len(during))]
 y=during
 fig=plt.plot(x,y)
+plt.xlabel('Decision Count')
+plt.ylabel('Strategy Change Magnitude')
+plt.title('Strategy Change Magnitude Over Decision Count')
 plt.show()
-
