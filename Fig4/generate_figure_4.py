@@ -1,349 +1,119 @@
-from matplotlib import pyplot as plt
+import matplotlib.pyplot as plt
+from mpl_toolkits.axes_grid1.inset_locator import inset_axes
+import matplotlib.patches as patches
 import numpy as np
 
-def panel_a(selection_intensity):
-    plt.rcParams['font.family'] = 'Arial'
-    plt.rc('font', size=17)
-
-    states_over_time = np.load(f'figure4_data/states_over_time_withoutMTBR_{selection_intensity}_7500.npy')
-
-    x = [value * 10 for value in range(1001)]
-    fig, ax = plt.subplots(figsize=(5, 5))
-
-    for index in range(1,101):
-        temp_matrix = np.loadtxt(f'figure4_data/WithoutMTBR_delta{selection_intensity}_{index}.txt')
-        
-        ax.plot(x, temp_matrix[:,5], color='red', linewidth = 0.5, alpha = 0.08)
-        ax.plot(x, temp_matrix[:,11], color='blue', linewidth = 0.5, alpha = 0.08)
-
-    x_time = [value * 0.01 for value in range(1000000)]
-
-    ax.plot(x_time, states_over_time[:,5], color='red', linewidth = 2.5, label = 'General TFT')
-    ax.plot(x_time, states_over_time[:,11], color='blue', linewidth = 2.5, label = 'ZDTFT2')
-    ax.plot(x_time, states_over_time[:,0]+states_over_time[:,1]+states_over_time[:,2]+states_over_time[:,3]+states_over_time[:,4]+states_over_time[:,6]+states_over_time[:,7]+states_over_time[:,8]+states_over_time[:,9]+states_over_time[:,10]
-            +states_over_time[:,12]+states_over_time[:,13], color='grey', linewidth = 1.5, label = 'Other strategies')
-
-    ax.ticklabel_format(style='sci', axis='x', scilimits=(0, 0))
-
-    ax.set_ylim(-0.02,1.0)
-    ax.set_xlim(0,4000)
-    ax.set_title('Without MTBR', fontsize=17.5)
-    ax.set_xlabel(r'Time', fontsize=17.5)
-    ax.set_ylabel(r'Fraction of strategies', fontsize=17.5)
-    plt.legend()
-
-    #plt.savefig('panel_a.svg')
+from matplotlib import rc
+rc('font', family='Arial')
+plt.rc('font', size=11)
+plt.rcParams['axes.linewidth'] = 0.5
 
 
-    plt.show()
+subplot_size = (3, 3)
+fig, axs = plt.subplots(2, 2, figsize=(subplot_size[0] * 2, subplot_size[1] * 2), gridspec_kw={'width_ratios': [subplot_size[0]] * 2, 'height_ratios': [subplot_size[1]] * 2})
+fig.subplots_adjust(wspace=0.18, hspace=0.24)
 
-def panel_b(selection_intensity):
-    plt.rcParams['font.family'] = 'Arial'
-    plt.rc('font', size=17)
 
-    states_over_time = np.load(f'figure4_data/states_over_time_withMTBR_{selection_intensity}_7500.npy')
+ax_schematic = axs[0, 0]
+ax_schematic.axis('off')
 
-    x = [value * 10 for value in range(1001)]
-    fig, ax = plt.subplots(figsize=(5, 5))
+main_axes_schematic = inset_axes(ax_schematic, width="100%", height="100%", loc='center')
+main_axes_schematic.set_aspect('equal', adjustable='box')
+for spine in main_axes_schematic.spines.values():
+    spine.set_linewidth(0.5)
 
-    for index in range(1,101):
-        temp_matrix = np.loadtxt(f'figure4_data/WithMTBR_delta{selection_intensity}_{index}.txt')
-        if temp_matrix[1000,6] >0.5 or temp_matrix[150,6] >0.5:
+rect_hg = patches.Rectangle((-2, 0), 2, 2, linewidth=0.5, edgecolor='none', facecolor='#add8e6')  
+rect_sd = patches.Rectangle((0, 0), 2, 2, linewidth=0.5, edgecolor='none', facecolor='#e0e5df')  
+rect_sh = patches.Rectangle((-2, -2), 2, 2, linewidth=0.5, edgecolor='none', facecolor='#bfee90')  
+rect_pd = patches.Rectangle((0, -2), 2, 2, linewidth=0.5, edgecolor='none', facecolor='#ffb6c1')  
+main_axes_schematic.add_patch(rect_hg)
+main_axes_schematic.add_patch(rect_sd)
+main_axes_schematic.add_patch(rect_sh)
+main_axes_schematic.add_patch(rect_pd)
+main_axes_schematic.text(-1, 1, 'HG', fontsize=11, ha='center', va='center')
+main_axes_schematic.text(1, 1, 'SD', fontsize=11, ha='center', va='center')
+main_axes_schematic.text(-1, -1, 'SH', fontsize=11, ha='center', va='center')
+main_axes_schematic.text(1, -1, 'PD', fontsize=11, ha='center', va='center')
+plt.xticks([-2, -1, 0, 1, 2], fontsize=11)
+plt.yticks([-2, -1, 0, 1, 2], fontsize=11)
+plt.xlabel(r'$\mathit{T}-\mathit{R}$', fontsize=11, labelpad=1.5)
+plt.ylabel(r'$\mathit{S}-\mathit{P}$', fontsize=11, labelpad=-5)
+plt.tick_params(axis='both', direction='in', width=0.5)
+
+
+
+for i in range(2):
+    for j in range(2):
+        if i == 0 and j == 0:
             continue
-
-        ax.plot(x, temp_matrix[:,0], color='green', linewidth = 0.5, alpha = 0.08)
-        ax.plot(x, temp_matrix[:,6], color='red', linewidth = 0.5, alpha = 0.08)
-        ax.plot(x, temp_matrix[:,12], color='blue', linewidth = 0.5, alpha = 0.08)
-
-
-    x_time = [value * 0.01 for value in range(1000000)]
-
-    ax.plot(x_time, states_over_time[:,0], color='green', linewidth = 2.5, label = 'MTBR')
-    ax.plot(x_time, states_over_time[:,6], color='red', linewidth = 2.5, label = 'General TFT')
-    ax.plot(x_time, states_over_time[:,12], color='blue', linewidth = 2.5, label = 'ZDTFT2')
-    ax.plot(x_time, states_over_time[:,1]+states_over_time[:,2]+states_over_time[:,3]+states_over_time[:,4]+states_over_time[:,5]+states_over_time[:,7]+states_over_time[:,8]+states_over_time[:,9]+states_over_time[:,10]
-            +states_over_time[:,11]+states_over_time[:,13]+states_over_time[:,14], color='grey', linewidth = 1.5, label = 'Other strategies')
-
-    ax.ticklabel_format(style='sci', axis='x', scilimits=(0, 0))
-
-    ax.set_ylim(-0.02,1.02)
-    ax.set_xlim(0,4000)
-    ax.set_title('With MTBR', fontsize=17.5)
-    ax.set_xlabel(r'Time', fontsize=17.5)
-    ax.set_ylabel(r'Fraction of strategies', fontsize=17.5)
-    plt.legend()
-
-    #plt.savefig('panel_b.svg')
-
-    plt.show()
-
-def panel_c(selection_intensity):
-    plt.rcParams['font.family'] = 'Arial'
-    plt.rc('font', size=17)
-    fig, ax = plt.subplots(figsize=(5, 5))
-
-    payoff_withMTBR_numerical = np.loadtxt(f'figure4_data/payoff_withMTBR_numerical_{selection_intensity}.txt')
-    payoff_withoutMTBR_numerical = np.loadtxt(f'figure4_data/payoff_withoutMTBR_numerical_{selection_intensity}.txt')
-
-    x_simulation = [value * 10 for value in range(1001)]
-
-    PayoffMatrix_withMTBR = np.loadtxt('figure4_data/payoffMatrix.txt')
-    PayoffMatrix_withoutMTBR = PayoffMatrix_withMTBR[1:,1:]
-    for index in range(1,101):
-        state_withMTBR_simulation = np.loadtxt(f'figure4_data/WithMTBR_delta{selection_intensity}_{index}.txt')
-        state_withoutMTBR_simulation = np.loadtxt(f'figure4_data/WithoutMTBR_delta{selection_intensity}_{index}.txt')
-
-        payoff_withMTBR_simulation = np.array([state_withMTBR_simulation[i, :] @ PayoffMatrix_withMTBR @ state_withMTBR_simulation[i, :].T for i in range(state_withMTBR_simulation.shape[0])])
-        payoff_withoutMTBR_simulation = np.array([state_withoutMTBR_simulation[i, :] @ PayoffMatrix_withoutMTBR @ state_withoutMTBR_simulation[i, :].T for i in range(state_withoutMTBR_simulation.shape[0])])
-
-        ax.plot(x_simulation, payoff_withMTBR_simulation, color='red', linewidth=0.5, alpha = 0.08)
-        ax.plot(x_simulation, payoff_withoutMTBR_simulation, color='blue', linewidth=0.5, alpha = 0.08)
-
-    x_numerical = [value * 0.01 for value in range(1000000)]
-    ax.plot(x_numerical, payoff_withMTBR_numerical, color='red', linewidth=2.5, label='With MTBR')
-    ax.plot(x_numerical, payoff_withoutMTBR_numerical, color='blue', linewidth=2.5, label='Without MTBR')
-
-    # 设置横轴为科学计数法
-    ax.ticklabel_format(style='sci', axis='x', scilimits=(0, 0))
-
-    ax.set_ylim(2.85, 2.95)
-    ax.set_xlim(0, 4000)
-    ax.set_yscale('log')
-
-    ax.yaxis.set_ticks([])
-
-    custom_ticks = [2.86, 2.88, 2.90, 2.92, 2.94]
-    ax.set_yticks(custom_ticks)
-    ax.set_yticklabels([f'{tick:.2f}' for tick in custom_ticks])
-
-    ax.set_xlabel(r'Time', fontsize=17.5)
-    ax.set_ylabel(r'Global average payoff', fontsize=17.5)
-    plt.legend()
-
-    #plt.savefig('panel_c.svg')
-    plt.show()
-
-def panel_d():
-    plt.rcParams['font.family'] = 'Arial'
-    plt.rc('font', size=17)
-
-    state_vector_final = []
-    for deltaindex in range(1,22):
-        vector_deltaindex = np.zeros((1,14))
-        for index in range(1,51):
-            temp_matrix = np.loadtxt(f'figure4_data/selection_intensity/WithoutMTBR_deltaindex{deltaindex}_{index}.txt')
-            vector_deltaindex += temp_matrix[-1,:]
-        vector_deltaindex /= 50
-        state_vector_final.append(vector_deltaindex)
-
-    state_vector_final = np.vstack(state_vector_final)
-
-    fig, ax = plt.subplots(figsize=(5, 5))
-
-    delta_set = np.array([10**(-1), 10**(-0.9), 10**(-0.8), 10**(-0.7), 10**(-0.6), 10**(-0.5), 10**(-0.4), 10**(-0.3), 10**(-0.2), 10**(-0.1), 1,
-                        10**(0.1), 10**(0.2), 10**(0.3), 10**(0.4), 10**(0.5), 10**(0.6), 10**(0.7), 10**(0.8), 10**(0.9), 10])
-
-
-    ax.scatter(
-        delta_set[::2],
-        state_vector_final[:,5][::2],
-        facecolor='none',
-        marker='s',
-        s=50,
-        edgecolor='red',
-        linewidths=1.1,
-        label='Gradual TFT'
-    )
-
-    ax.scatter(
-        delta_set[::2],
-        state_vector_final[:,11][::2],
-        facecolor='none',
-        marker='s',
-        s=50,
-        edgecolor='blue',
-        linewidths=1.1,
-        label='ZDGTFT2'
-    )
-
-    states_over_time = np.loadtxt('figure4_data/WithoutMTBR_selectionIntensity_numerical.txt')
-
-
-    ax.plot(delta_set, states_over_time[:,5], color='red', linewidth = 1.5, label='Theoretical')
-    ax.plot(delta_set, states_over_time[:,11], color='blue', linewidth = 1.5, label='Simulation')
-
-    ax.ticklabel_format(style='sci', axis='x', scilimits=(0, 0))
-    ax.set_xscale('log')
-    ax.set_ylim(-0.04,1.04)
-    ax.set_title('Without MTBR', fontsize=17.5)
-    ax.set_xlabel(r'Selection intensity', fontsize=17.5)
-    ax.set_ylabel(r'Fraction of strategies', fontsize=17.5)
-    plt.legend()
-    #plt.savefig('panel_d.svg')
-    plt.show()
-
-def panel_e():
-    plt.rcParams['font.family'] = 'Arial'
-    plt.rc('font', size=17)
-
-    state_vector_final = []
-    for deltaindex in range(1,22):
-        vector_deltaindex = np.zeros((1,15))
-        for index in range(1,51):
-            temp_matrix = np.loadtxt(f'figure4_data/selection_intensity/WithMTBR_deltaindex{deltaindex}_{index}.txt')
-            vector_deltaindex += temp_matrix[-1,:]
-        vector_deltaindex /= 50
-        state_vector_final.append(vector_deltaindex)
-
-    state_vector_final = np.vstack(state_vector_final)
-
-    fig, ax = plt.subplots(figsize=(5, 5))
-
-    delta_set = np.array([10**(-1), 10**(-0.9), 10**(-0.8), 10**(-0.7), 10**(-0.6), 10**(-0.5), 10**(-0.4), 10**(-0.3), 10**(-0.2), 10**(-0.1), 1,
-                        10**(0.1), 10**(0.2), 10**(0.3), 10**(0.4), 10**(0.5), 10**(0.6), 10**(0.7), 10**(0.8), 10**(0.9), 10])
-
-
-    ax.scatter(
-        delta_set[::2],
-        state_vector_final[:,0][::2],
-        facecolor='none',
-        marker='s',
-        s=50,
-        edgecolor='green',
-        linewidths=1.1,
-        label='MTBR'
-    )
-
-    ax.scatter(
-        delta_set[::2],
-        state_vector_final[:,6][::2],
-        facecolor='none',
-        marker='s',
-        s=50,
-        edgecolor='red',
-        linewidths=1.1,
-        label='Gradual TFT'
-    )
-
-    ax.scatter(
-        delta_set[::2],
-        state_vector_final[:,12][::2],
-        facecolor='none',
-        marker='s',
-        s=50,
-        edgecolor='blue',
-        linewidths=1.1,
-        label='ZDGTFT2'
-    )
-
-
-    states_over_time = np.loadtxt('figure4_data/WithMTBR_selectionIntensity_numerical.txt')
-
-    ax.plot(delta_set, states_over_time[:,0], color='green', linewidth = 1.5, label='Theoretical')
-    ax.plot(delta_set, states_over_time[:,6], color='red', linewidth = 1.5, label='Simulation')
-    ax.plot(delta_set, states_over_time[:,12], color='blue', linewidth = 1.5, alpha = 0.5, label='Simulation')
-
-    ax.ticklabel_format(style='sci', axis='x', scilimits=(0, 0))
-    ax.set_xscale('log')
-    ax.set_ylim(-0.04,1.04)
-    ax.set_title('With MTBR', fontsize=17.5)
-    ax.set_xlabel(r'Selection intensity', fontsize=17.5)
-    ax.set_ylabel(r'Fraction of strategies', fontsize=17.5)
-    plt.legend()
-    #plt.savefig('panel_e.svg')
-    plt.show()
-
-def panel_f():
-    plt.rcParams['font.family'] = 'Arial'
-    plt.rc('font', size=17)
-
-    PayoffMatrix_withMTBR = np.loadtxt('figure4_data/payoffMatrix.txt')
-    PayoffMatrix_withoutMTBR = PayoffMatrix_withMTBR[1:,1:]
-
-    state_vector_final_withoutMTBR = []
-    for deltaindex in range(1,22):
-        vector_deltaindex = np.zeros((1,14))
-        for index in range(1,51):
-            temp_matrix = np.loadtxt(f'figure4_data/selection_intensity/WithoutMTBR_deltaindex{deltaindex}_{index}.txt')
-            vector_deltaindex += temp_matrix[-1,:]
-        vector_deltaindex /= 50
-        state_vector_final_withoutMTBR.append(vector_deltaindex)
-
-    state_vector_final_withoutMTBR = np.vstack(state_vector_final_withoutMTBR)
-
-    state_vector_final_withMTBR = []
-    for deltaindex in range(1,22):
-        vector_deltaindex = np.zeros((1,15))
-        for index in range(1,51):
-            temp_matrix = np.loadtxt(f'figure4_data/selection_intensity/withMTBR_deltaindex{deltaindex}_{index}.txt')
-            vector_deltaindex += temp_matrix[-1,:]
-        vector_deltaindex /= 50
-        state_vector_final_withMTBR.append(vector_deltaindex)
-
-    state_vector_final_withMTBR = np.vstack(state_vector_final_withMTBR)
-
-    payoff_withMTBR_nu = np.zeros(21)
-    payoff_withoutMTBR_nu = np.zeros(21)
-
-    for index in range(21):
-        payoff_withMTBR_nu[index] = state_vector_final_withMTBR[index,:] @ PayoffMatrix_withMTBR @ state_vector_final_withMTBR[index,:].T
-        payoff_withoutMTBR_nu[index] = state_vector_final_withoutMTBR[index,:] @ PayoffMatrix_withoutMTBR @ state_vector_final_withoutMTBR[index,:].T
-
-
-    fig, ax = plt.subplots(figsize=(5, 5))
-
-    delta_set = np.array([10**(-1), 10**(-0.9), 10**(-0.8), 10**(-0.7), 10**(-0.6), 10**(-0.5), 10**(-0.4), 10**(-0.3), 10**(-0.2), 10**(-0.1), 1,
-                        10**(0.1), 10**(0.2), 10**(0.3), 10**(0.4), 10**(0.5), 10**(0.6), 10**(0.7), 10**(0.8), 10**(0.9), 10])
-
-    ax.scatter(
-        delta_set[::2],
-        payoff_withoutMTBR_nu[::2],
-        facecolor='none',
-        marker='s',
-        s=50,
-        edgecolor='blue',
-        linewidths=1.1,
-        label='Without MTBR'
-    )
-
-    ax.scatter(
-        delta_set[::2],
-        payoff_withMTBR_nu[::2],
-        facecolor='none',
-        marker='s',
-        s=50,
-        edgecolor='red',
-        linewidths=1.1,
-        label='With MTBR'
-    )
-
-    states_over_time_withoutMTBR = np.loadtxt('figure4_data/WithoutMTBR_selectionIntensity_numerical.txt')
-    states_over_time_withMTBR = np.loadtxt('figure4_data/WithMTBR_selectionIntensity_numerical.txt')
-
-    payoff_withMTBR_si = np.zeros(21)
-    payoff_withoutMTBR_si = np.zeros(21)
-
-    for index in range(21):
-        payoff_withMTBR_si[index] = states_over_time_withMTBR[index,:] @ PayoffMatrix_withMTBR @ states_over_time_withMTBR[index,:].T
-        payoff_withoutMTBR_si[index] = states_over_time_withoutMTBR[index,:] @ PayoffMatrix_withoutMTBR @ states_over_time_withoutMTBR[index,:].T
-
-    ax.plot(delta_set, payoff_withMTBR_si, color='red', linewidth = 1.5, label='Theoretical')
-    ax.plot(delta_set, payoff_withoutMTBR_si, color='blue', linewidth = 1.5, label='Simulation')
-
-
-    ax.set_xscale('log')
-    ax.set_ylim(2.89,2.94)
-    ax.set_xlabel(r'Selection intensity', fontsize=17.5)
-    ax.set_ylabel(r'Global average payoff', fontsize=17.5)
-    plt.legend()
-
-    #plt.savefig('panel_f.svg')
-
-    plt.show()
-
-#panel_a(0.5)
-#panel_b(0.5)
-#panel_c(0.5)
-#panel_d()
-#panel_e()
-#panel_f()
+        elif i == 0 and j == 1:
+            data_filename = "WM.npy"
+            #text_label = 'Well-mixed population'
+            text_label = 'Well-mixed'
+            final_result = np.load(data_filename)
+        elif i == 1 and j == 0:
+            data_filename = "lattice.npy"
+            text_label = 'Lattice'
+            final_result = np.load(data_filename)
+            final_result *= 0.01
+        elif i == 1 and j == 1:
+            data_filename = "SF.npy"
+            text_label = 'Scale-free'
+            final_result = np.load(data_filename)
+
+        ax = axs[i, j]
+        ax.axis('off')
+        main_axes = inset_axes(ax, width="100%", height="100%", loc='center')
+        main_axes.set_aspect('equal', adjustable='box')
+        for spine in main_axes.spines.values():
+            spine.set_linewidth(0.5)
+        img = main_axes.imshow(final_result, cmap='YlGnBu_r', interpolation='bicubic', vmin=0, vmax=1)
+
+        yticks_percent = [0, 0.25, 0.5, 0.75, 1]
+        yticklabels = ['-1', '0', '1', '2', '3']
+        main_axes.set_yticks([main_axes.get_ylim()[0] + p * (main_axes.get_ylim()[1] - main_axes.get_ylim()[0]) for p in yticks_percent])
+        main_axes.set_yticklabels(yticklabels, fontsize=11)
+
+        xticks_percent = [0, 0.25, 0.5, 0.75, 1]
+        xticklabels = ['1', '2', '3', '4', '5']
+        main_axes.set_xticks([main_axes.get_xlim()[0] + p * (main_axes.get_xlim()[1] - main_axes.get_xlim()[0]) for p in xticks_percent])
+        main_axes.set_xticklabels(xticklabels, fontsize=11)
+
+        main_axes.set_xlabel('T', fontsize=11, labelpad=1.5, fontstyle='italic')
+        main_axes.set_ylabel('S', fontsize=11, labelpad=-1.5, fontstyle='italic')
+        main_axes.tick_params(axis='both', direction='in', which='both', bottom=True, top=False, left=True, right=False, width=0.5)
+
+
+        #mid_y = final_result.shape[0] // 2
+        #mid_x = final_result.shape[1] // 2
+        main_axes.axhline(y=9.5, color='gray', linestyle='--', linewidth=0.5)
+        main_axes.axvline(x=9.5, color='gray', linestyle='--', linewidth=0.5)
+
+        fig.text(axs[i, j].get_position().x0 + axs[i, j].get_position().width / 2, axs[i, j].get_position().y0 + axs[i, j].get_position().height * 0.1, text_label, fontsize=11, ha='center', va='bottom')
+
+
+cax_height = axs[0, 1].get_position().y1 - axs[1, 1].get_position().y0
+bias5 = (axs[0, 1].get_position().y1 - axs[0, 1].get_position().y0) * 0
+cax = fig.add_axes([0.93, axs[1, 1].get_position().y0 + bias5, 0.02, cax_height - 2 * bias5])  # [left, bottom, width, height]
+cbar = fig.colorbar(img, cax=cax, shrink=0.72, ticks=[0, 1])
+cbar.ax.tick_params(axis='y', length=0, width=0.5)
+cbar.set_label('Fraction of MTBR agents', rotation=90, fontsize=11, labelpad=-3)
+
+
+label_ax_a = fig.add_axes([axs[0, 0].get_position().x0, axs[0, 0].get_position().y1, 0.01, 0.01], zorder=10)
+label_ax_b = fig.add_axes([axs[0, 1].get_position().x0, axs[0, 1].get_position().y1, 0.01, 0.01], zorder=10)
+label_ax_c = fig.add_axes([axs[1, 0].get_position().x0, axs[1, 0].get_position().y1, 0.01, 0.01], zorder=10)
+label_ax_d = fig.add_axes([axs[1, 1].get_position().x0, axs[1, 1].get_position().y1, 0.01, 0.01], zorder=10)
+
+label_ax_a.text(-3.5, 2, 'a', fontsize=11, fontweight='bold', ha='center', va='center')
+label_ax_b.text(-3.5, 2, 'b', fontsize=11, fontweight='bold', ha='center', va='center')
+label_ax_c.text(-3.5, 2, 'c', fontsize=11, fontweight='bold', ha='center', va='center')
+label_ax_d.text(-3.5, 2, 'd', fontsize=11, fontweight='bold', ha='center', va='center')
+
+label_ax_a.axis('off')
+label_ax_b.axis('off')
+label_ax_c.axis('off')
+label_ax_d.axis('off')
+
+# plt.savefig('Figure5.svg')
+plt.show()
