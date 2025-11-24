@@ -12,7 +12,6 @@ def get_Ab(PayoffMatrix, num_of_strategies, num_of_players):
     # 最后一行全为 1
     A[-1, :] = 1
 
-    
     # 初始化 b 向量
     b = np.zeros(num_of_strategies)
     
@@ -245,3 +244,4 @@ state_vector = np.vstack(state_vector)
 np.savetxt('WithMTBR_selectionIntensity_numerical_withGTFT3',state_vector)
 
 '''
+
