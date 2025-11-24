@@ -1,9 +1,9 @@
 # multiagent_q_learning_for_evolutionary_games
-This repository contains the source code for the paper "Exploring dominant strategies in iterated and evolutionary games: a multi-agent reinforcement learning approach". The code is designed to investigate dominant strategies in both iterated and evolutionary game settings, using multi-agent reinforcement learning techniques.
+This repository contains the source code for the paper "A multi-agent reinforcement learning framework for exploring dominant strategies in iterated and evolutionary games". The code is designed to investigate dominant strategies in both iterated and evolutionary game settings, using multi-agent reinforcement learning techniques.
 
 ## Introduction
 
-This repository provides the Multi-agent-Q-learning code for finding the dominant strategy in evolutionary games, i.e., the memory-two bilateral reciprocity (MTBR) strategy. It also includes the data for the figures presented in the paper and the code for generating those figures.
+This repository provides the Multi-agent-Q-learning code for finding the dominant strategy in evolutionary games, specifically the memory-two bilateral reciprocity (MTBR) strategy. It also includes the data for the figures presented in the paper and the code for generating those figures. The full simulation code used to evaluate strategies, including MTBR, and to generate the numerical simulation outputs is also included.
 
 ## System Requirements
 
@@ -14,9 +14,10 @@ This repository provides the Multi-agent-Q-learning code for finding the dominan
 
 ### Software Dependencies
 
-- **Python Version:** Python 3.8.5 or higher 
+- **Python Version:** Python 3.8.5 or higher
+- **Julia Version:** Julia 1.9.4
 
-- **Required Packages:**  
+- **Required Python Packages:**  
 
 - sys
 - random
@@ -29,6 +30,16 @@ This repository provides the Multi-agent-Q-learning code for finding the dominan
 - datetime
 
 All dependencies can be installed via pip if missing.
+
+- **Required Julia Packages:**  
+
+- ArgParse.jl
+- DataFrames.jl
+- Distributions.jl
+- IterativeSolvers.jl
+- StatsBase.jl
+
+These dependencies can be installed using the Julia package manager.
 
 ## Installation Guide
 
