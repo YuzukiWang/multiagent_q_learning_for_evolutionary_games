@@ -19,25 +19,25 @@ This repository provides the Multi-agent-Q-learning code for finding the dominan
 
 - **Required Python Packages:**  
 
-- sys
-- random
-- time
-- matplotlib
-- json
-- collections
-- numpy
-- pickle
-- datetime
+ - sys
+ - random
+ - time
+ - matplotlib
+ - json
+ - collections
+ - numpy
+ - pickle
+ - datetime
 
 All dependencies can be installed via pip if missing.
 
 - **Required Julia Packages:**  
 
-- ArgParse.jl
-- DataFrames.jl
-- Distributions.jl
-- IterativeSolvers.jl
-- StatsBase.jl
+ - ArgParse.jl
+ - DataFrames.jl
+ - Distributions.jl
+ - IterativeSolvers.jl
+ - StatsBase.jl
 
 These dependencies can be installed using the Julia package manager.
 
