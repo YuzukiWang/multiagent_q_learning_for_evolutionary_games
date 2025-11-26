@@ -1,14 +1,13 @@
 # Configuration section
 population_size = 1# How many AIs in the population
 mentor_instances = 1 # How many instances of each defined strategy there are
-#mentor_strategy = 7 #测试训练集
+mentor_strategy = 7 
 mentor_strategy = [0,2,3,4,5,6,7,8,9,10,11,12,13,14]
-#mentor_strategy = [0,2,3,4,5,6]
 episode_length = 20 # How many turns to play
 testing_episodes = 10 # How many episodes to play during the testing phase
 
 
-s = 0.05 #选择强度
+s = 0.05 #selection intensity
 
 # Prisoner's dillema rewards [Player 1 reward, Player 2 reward]
 
@@ -139,10 +138,10 @@ class AgentDefined:
         self.deadlock_threshold = 3
         self.randomness_threshold = 8
         self.randomness_counter = 0
-        self.deadlock_counter = 0  #omegaTFT用
+        self.deadlock_counter = 0  #omegaTFT
         
         self.calm_count = 0
-        self.punish_count = 0 #gradual用
+        self.punish_count = 0 #gradual
 
         
     def strategy_print(self):
@@ -200,7 +199,7 @@ class AgentDefined:
         p4 = phi * (1 - s) * (l - P)
 
         four_vector = [p1, p2, p3, p4]
-        return four_vector  #四个参数分别代表，自己C对手C，自己C对手D，自己D对手C，自己D对手D
+        return four_vector  
 
     def pick_action(self, state,iterp):
         if self.strategy == 0: # Tit for tat
@@ -304,7 +303,7 @@ class AgentDefined:
             if len(state[:,0]) == 1:
                 return state[-1,0]
             if self.deadlock_counter >= self.deadlock_threshold:
-                move = 0 #需要解除死锁
+                move = 0 
                 if self.deadlock_counter == self.deadlock_threshold:
                     self.deadlock_counter = self.deadlock_threshold + 1
                 else:
@@ -322,7 +321,7 @@ class AgentDefined:
             # Compare counts to thresholds
             # If self.randomness_counter exceeds Y, Defect for the remainder
                 if self.randomness_counter >= self.randomness_threshold:
-                    move = 1 #超过阈值得allD
+                    move = 1 
                 else:
                 # TFT
                     move = state[-1][0]
@@ -373,7 +372,7 @@ class AgentDefined:
                 
             four_vector=self.receive_match_attributes(phi = 1/9, s = 0.5, l = P) 
             # print( "ZDExtort2",four_vector)
-            #四个参数分别代表，自己C对手C，自己C对手D，自己D对手C，自己D对手D
+            
             if state[-1][1] == 0 and state[-1][0] ==0: #CC
                 if random.random()<four_vector[0]:
                     return 0
@@ -406,7 +405,7 @@ class AgentDefined:
                 
             four_vector=self.receive_match_attributes(phi = 1/8, s = 0.5, l = 1) 
             # print( "ZDExtort2v2",four_vector)
-            #四个参数分别代表，自己C对手C，自己C对手D，自己D对手C，自己D对手D
+            
             if state[-1][1] == 0 and state[-1][0] ==0: #CC
                 if random.random()<four_vector[0]:
                     return 0
@@ -439,7 +438,7 @@ class AgentDefined:
                 
             four_vector=self.receive_match_attributes(phi = 3 / 26, s = 1 / 3, l = 1) 
             # print( "ZDExtort3",four_vector)
-            #四个参数分别代表，自己C对手C，自己C对手D，自己D对手C，自己D对手D
+            
             if state[-1][1] == 0 and state[-1][0] ==0: #CC
                 if random.random()<four_vector[0]:
                     return 0
@@ -472,7 +471,7 @@ class AgentDefined:
                 
             four_vector=self.receive_match_attributes(phi = 4 / 17, s = 0.25, l = 1) 
             # print( "ZDExtort4", four_vector)
-            #四个参数分别代表，自己C对手C，自己C对手D，自己D对手C，自己D对手D
+            
             if state[-1][1] == 0 and state[-1][0] ==0: #CC
                 if random.random()<four_vector[0]:
                     return 0
@@ -505,7 +504,7 @@ class AgentDefined:
                 
             four_vector=self.receive_match_attributes(phi = 1/8, s = 0.5, l = 3) 
             # print( "ZDGen2", four_vector)
-            #四个参数分别代表，自己C对手C，自己C对手D，自己D对手C，自己D对手D
+            
             if state[-1][1] == 0 and state[-1][0] ==0: #CC
                 if random.random()<four_vector[0]:
                     return 0
@@ -538,7 +537,7 @@ class AgentDefined:
                 
             four_vector=self.receive_match_attributes(phi = 0.25, s = 0.5, l = R) 
             # print("ZDGTFT2", four_vector)
-            #四个参数分别代表，自己C对手C，自己C对手D，自己D对手C，自己D对手D
+            
             if state[-1][1] == 0 and state[-1][0] ==0: #CC
                 if random.random()<four_vector[0]:
                     return 0
@@ -571,7 +570,7 @@ class AgentDefined:
                 
             four_vector=self.receive_match_attributes(phi = 0.1, s = 0.0, l = 1) 
             # print("ZDMischief", four_vector)
-            #四个参数分别代表，自己C对手C，自己C对手D，自己D对手C，自己D对手D
+            
             if state[-1][1] == 0 and state[-1][0] ==0: #CC
                 if random.random()<four_vector[0]:
                     return 0
@@ -604,7 +603,7 @@ class AgentDefined:
                 
             four_vector=self.receive_match_attributes(phi = 1/4, s = 0.0, l = 2) 
             # print("ZDSet2", four_vector)
-            #四个参数分别代表，自己C对手C，自己C对手D，自己D对手C，自己D对手D
+            
             if state[-1][1] == 0 and state[-1][0] ==0: #CC
                 if random.random()<four_vector[0]:
                     return 0
@@ -656,7 +655,7 @@ class AgentDefined:
 # Stores all AIs
 population = []
 
-population2 = [] #对手
+population2 = [] 
 
 # Stores record of analysis of all AIs
 population_analysis = []
@@ -669,20 +668,20 @@ mentors2 = []
 
 
 import json
-filename='strategy0729.txt'
+filename='D:\code\prisoners-dilemma-q-master\strategy0729.txt'
 
 with open(filename,'r') as file:
     strategy00=json.load(file)
 strategy00_dict={item[0]: item[1] for item in strategy00}
 # Create a random AI with a random amount of memory
 for i in range(population_size):
-    # population.append(AgentQ(random.randint(2,2)))
-    # population[i].Q=strategy00_dict
+    population.append(AgentQ(random.randint(2,2)))
+    population[i].Q=strategy00_dict
     
-    # population2.append(AgentQ(random.randint(2,2)))
-    # population2[i].Q=strategy00_dict
-    population.append(AgentDefined(6))
-    population2.append(AgentDefined(6))
+    population2.append(AgentQ(random.randint(2,2)))
+    population2[i].Q=strategy00_dict
+    # population.append(AgentDefined(6))
+    # population2.append(AgentDefined(6))
 
 # Create instances of defined strategies
 for i in mentor_strategy: # Number of defined strategies
@@ -700,9 +699,9 @@ for i in mentor_strategy: # Number of defined strategies
 bigpopulation=population+mentors
 bigpopulation2=population2+mentors2
 
-# num_strategy = [ [ 0 for _ in range(mentor_strategy + 1)  ] for _ in range(testing_episodes) ] #统计策略的变化
+# num_strategy = [ [ 0 for _ in range(mentor_strategy + 1)  ] for _ in range(testing_episodes) ] 
 max_episode = 1
-num_strategy = [ [ 0 for _ in range(11)  ] for _ in range(max_episode) ] #统计策略的变化
+num_strategy = [ [ 0 for _ in range(11)  ] for _ in range(max_episode) ] 
 
 episode_total = 0
 
@@ -710,7 +709,7 @@ iterp1=False
 iterp2=False
 
 
-test_times=4
+test_times=10000
 
 for iepisode in range(max_episode):
     
@@ -722,12 +721,12 @@ for iepisode in range(max_episode):
     
 
     
-    # for iplayer1 in range(len(bigpopulation)):  #所有人两两博弈
-    for iplayer1 in range(len(bigpopulation)): #只测试PKU01与其他个体交互
+    # for iplayer1 in range(len(bigpopulation)):  
+    for iplayer1 in range(len(bigpopulation)): 
         # if iterp1==True:
         #     iterp1 = False
         # else:
-        #     iterp1 = True  #切换第一步出的策略
+        #     iterp1 = True  
     
     
         # for iplayer2 in range(iplayer1+1,len(bigpopulation)):
@@ -803,28 +802,27 @@ for iepisode in range(max_episode):
         
                     total_reward1 += reward1
                     total_reward2 += reward2
-                reward_episode[iplayer1][iplayer2] += total_reward1/test_times/2  #玩家1碰见玩家2的收益
-                reward_episode[iplayer2][iplayer1] += total_reward2/test_times/2  #玩家2碰见玩家1的收益
+                reward_episode[iplayer1][iplayer2] += total_reward1/test_times/2  
+                reward_episode[iplayer2][iplayer1] += total_reward2/test_times/2  
                 
                 # print("Score: " + player1.strategy_print()  + "      " + str(round(total_reward1,1)) + " to " + str(round(total_reward2,1)) + "      " +player2.strategy_print())
     
                 # print(state2,"\n",state1)
        
-    for iavg_reward in range(len(bigpopulation)) : #求平均收益
+    for iavg_reward in range(len(bigpopulation)) : 
         avg_reward[iavg_reward] = sum(reward_episode[iavg_reward]) / (len(bigpopulation)) / episode_length 
         
     reward_episode_np = np.array(reward_episode)
     
     reward_episode = reward_episode_np / 20
        
-    # for irefresh in range(len(bigpopulation)): #更新
+    # for irefresh in range(len(bigpopulation)): 
     #     opponent_refresh = random.randint(0,len(bigpopulation)-1)
         
     #     Ptrans=1 / (exp(  s *(avg_reward[len(bigpopulation) - 1 - irefresh] - avg_reward[len(bigpopulation) - 1 - opponent_refresh]) )  + 1)
     #     if random.random()<Ptrans:
     #         bigpopulation[len(bigpopulation) - 1 - irefresh] = bigpopulation[len(bigpopulation) - 1 - opponent_refresh]            
 
-    # 绘图来统计策略的演化轨迹
     for i_num in range(len(bigpopulation)) :
         if bigpopulation[i_num].strategy_print() == "strategy00" :
             num_strategy[ iepisode][0] +=1
@@ -847,7 +845,7 @@ for iepisode in range(max_episode):
      
     episode_total += 1
     
-    ifbreak = 0 #检查是否已经演化完毕
+    ifbreak = 0 
     for check_break in range(11):
         if num_strategy[ iepisode][check_break] >= mentor_instances * (len(mentor_strategy) + 1) -2:
             ifbreak = 1024;
@@ -856,19 +854,14 @@ for iepisode in range(max_episode):
     
     if ifbreak == 1024:
         break;
-
-#print(reward_episode)
-np.savetxt('payoffMatrix.txt', reward_episode, fmt='%.8f')  
-
-#np.savetxt('data2_left.txt', avg_reward)  
-#np.save('data2_left.npy', avg_reward)
+        
 
 # y={}
 
-# for j in range(11):#存储并分离avg和std
+# for j in range(11):
 #     # y[j]=[  i[j] for i in num_strategy ]     
 #     y[j]=[  num_strategy[i][j] for i in range(episode_total) ] 
-# fig =plt.figure()#绘图
+# fig =plt.figure()
 # fig.suptitle('evolution of strategy')
 # # x=range(testing_episodes)
 # x=range(episode_total)
@@ -903,18 +896,18 @@ plt.rcParams["axes.linewidth"] = 0.5
 plt.rcParams["xtick.major.width"] = 0.5
 plt.rcParams["ytick.major.width"] = 0.5
 
-# # 创建热图
-plt.figure(figsize=(12, 10))  # 调整图表的大小
+
+plt.figure(figsize=(12, 10))  
 sns.heatmap(reward_episode, xticklabels=strategies, yticklabels=strategies, cmap="YlGnBu", annot=True, fmt=".2f", annot_kws={"size": 9}, linewidths=0, linecolor='black')
 plt.title("Payoff Matrix Heatmap", fontsize=12)
-plt.xticks(fontsize=11, rotation=45, ha="right")  # 旋转和右对齐横坐标标签
+plt.xticks(fontsize=11, rotation=45, ha="right")  
 plt.yticks(fontsize=11)
-plt.tight_layout(pad=2.0)  # 调整子图参数以适应图形区域，减少空白
+plt.tight_layout(pad=2.0)  
 
-# # 保存为PDF文件
-# # plt.savefig("reward_episode_heatmap.pdf", format='pdf')
 
-# # 显示图表
+# plt.savefig("reward_episode_heatmap.pdf", format='pdf')
+
+
 plt.show()
 
     

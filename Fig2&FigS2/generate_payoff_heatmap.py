@@ -3,7 +3,6 @@ population_size = 1# How many AIs in the population
 mentor_instances = 1 # How many instances of each defined strategy there are
 mentor_strategy = 7 
 mentor_strategy = [0,2,3,4,5,6,7,8,9,10,11,12,13,14]
-# mentor_strategy = [0,2,3,4,5,6]
 episode_length = 20 # How many turns to play
 testing_episodes = 10 # How many episodes to play during the testing phase
 
